@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    android:id="@+id/movie_card"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,7 +22,7 @@
 
         <ImageView
             android:id="@+id/movie_imageview"
-            android:layout_width="120dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:contentDescription="@string/movie_image_content_description"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,7 +52,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
-            android:text="TextView"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"

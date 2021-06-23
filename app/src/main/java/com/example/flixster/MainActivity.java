@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -24,9 +25,9 @@ import okhttp3.Headers;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    MoviesAdapter adapter;
-    List<Movie> movies;
+    private RecyclerView recyclerView;
+    private MoviesAdapter adapter;
+    private List<Movie> movies;
 
     public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=a9e7a1d1bbdb2899ade1a8438fada07b";
     public static final String TAG = "MainActivity.java";
@@ -76,7 +77,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView(){
-        adapter = new MoviesAdapter(movies, this);
+        adapter = new MoviesAdapter(movies, position -> {
+            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+            intent.putExtra("movie", movies.get(position));
+            startActivity(intent);
+        }, this);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

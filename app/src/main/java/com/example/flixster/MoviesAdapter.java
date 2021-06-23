@@ -1,6 +1,7 @@
 package com.example.flixster;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -18,17 +20,17 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
 
     public interface onItemClick {
-        void onItemLongClicked(int position);
         void onItemClicked(int position);
     }
 
-    List<Movie> movies;
-    onItemClick clickListener;
-    Context context;
+    private List<Movie> movies;
+    private onItemClick clickListener;
+    private Context context;
 
-    public MoviesAdapter(List<Movie> movies, Context context) {
+    public MoviesAdapter(List<Movie> movies, onItemClick onItemClick, Context context) {
         this.movies = movies;
         this.context = context;
+        this.clickListener = onItemClick;
     }
 
     @NonNull
@@ -51,12 +53,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView image;
-        TextView title;
-        TextView text;
+        private ImageView image;
+        private TextView title;
+        private TextView text;
+        private CardView card;
 
         public ViewHolder(@NonNull @org.jetbrains.annotations.NotNull View itemView) {
             super(itemView);
+            card = itemView.findViewById(R.id.movie_card);
             image = itemView.findViewById(R.id.movie_imageview);
             title = itemView.findViewById(R.id.movie_title);
             text = itemView.findViewById(R.id.movie_text);
@@ -65,11 +69,21 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         public void bind(Movie movie) {
             title.setText(movie.name);
             text.setText(movie.description);
+
+            String imageUrl;
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                imageUrl = movie.backdropUrl;
+            } else {
+                imageUrl = movie.imageUrl;
+            }
+
             Glide.with(context)
-                    .load(movie.imageUrl)
+                    .load(imageUrl)
                     .placeholder(R.drawable.flicks_movie_placeholder)
                     .error(R.drawable.flicks_movie_placeholder)
                     .into(image);
+
+            card.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
         }
     }
 }
