@@ -1,5 +1,6 @@
 package com.example.flixster;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.example.flixster.model.Movie;
 
 import java.util.List;
 
@@ -20,9 +24,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
     List<Movie> movies;
     onItemClick clickListener;
+    Context context;
 
-    public MoviesAdapter(List<Movie> movies) {
+    public MoviesAdapter(List<Movie> movies, Context context) {
         this.movies = movies;
+        this.context = context;
     }
 
     @NonNull
@@ -59,7 +65,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         public void bind(Movie movie) {
             title.setText(movie.name);
             text.setText(movie.description);
-            image.setImageDrawable(itemView.getResources().getDrawable(R.drawable.ic_launcher_background));
+            Glide.with(context)
+                    .load(movie.imageUrl)
+                    .placeholder(R.drawable.flicks_movie_placeholder)
+                    .error(R.drawable.flicks_movie_placeholder)
+                    .into(image);
         }
     }
 }
