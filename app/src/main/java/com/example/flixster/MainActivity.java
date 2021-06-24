@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.codepath.asynchttpclient.callback.TextHttpResponseHandler;
+import com.example.flixster.databinding.ActivityMainBinding;
 import com.example.flixster.model.Movie;
 
 import org.json.JSONArray;
@@ -25,7 +27,9 @@ import okhttp3.Headers;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
+    ActivityMainBinding binding;
+
+//    private RecyclerView recyclerView;
     private MoviesAdapter adapter;
     private List<Movie> movies;
 
@@ -35,11 +39,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View rootView = binding.getRoot();
+        setContentView(rootView);
 
         movies = new ArrayList<>();
 
-        initViews();
         fetchMovies();
         initRecyclerView();
     }
@@ -72,10 +77,6 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private void initViews(){
-        recyclerView = findViewById(R.id.movie_recyclerview);
-    }
-
     private void initRecyclerView(){
         adapter = new MoviesAdapter(movies, position -> {
             Intent intent = new Intent(MainActivity.this, DetailActivity.class);
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }, this);
 
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.movieRecyclerview.setAdapter(adapter);
+        binding.movieRecyclerview.setLayoutManager(new LinearLayoutManager(this));
     }
 }

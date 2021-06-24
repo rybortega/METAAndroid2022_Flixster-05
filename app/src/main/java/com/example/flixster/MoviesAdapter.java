@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.flixster.databinding.MovieListitemBinding;
 import com.example.flixster.model.Movie;
 
 import java.util.List;
@@ -53,22 +54,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView image;
-        private TextView title;
-        private TextView text;
-        private CardView card;
+        MovieListitemBinding binding;
 
         public ViewHolder(@NonNull @org.jetbrains.annotations.NotNull View itemView) {
             super(itemView);
-            card = itemView.findViewById(R.id.movie_card);
-            image = itemView.findViewById(R.id.movie_imageview);
-            title = itemView.findViewById(R.id.movie_title);
-            text = itemView.findViewById(R.id.movie_text);
+            binding = MovieListitemBinding.bind(itemView);
         }
 
         public void bind(Movie movie) {
-            title.setText(movie.name);
-            text.setText(movie.description);
+            binding.movieTitle.setText(movie.name);
+            binding.movieText.setText(movie.description);
 
             String imageUrl;
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
@@ -81,9 +76,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
                     .load(imageUrl)
                     .placeholder(R.drawable.flicks_movie_placeholder)
                     .error(R.drawable.flicks_movie_placeholder)
-                    .into(image);
+                    .into(binding.movieImageview);
 
-            card.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
+            binding.movieCard.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
         }
     }
 }
