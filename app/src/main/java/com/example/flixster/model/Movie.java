@@ -12,20 +12,15 @@ import java.util.List;
 
 public class Movie implements Parcelable {
 
-    public String name;
-    public String description;
-    public String imageUrl;
-    public String backdropUrl;
-    public String releaseDate;
-    public int voteCount;
-    public double voteAverage;
-
-    public Movie(String name, String description, String imageUrl, String backdropUrl) {
-        this.name = name;
-        this.description = description;
-        this.imageUrl = imageUrl;
-        this.backdropUrl = backdropUrl;
-    }
+    private final String name;
+    private final String description;
+    private final String imageUrl;
+    private final String backdropUrl;
+    private final String releaseDate;
+    private final int voteCount;
+    private final double voteAverage;
+    private final int id;
+    private String ytVideoId = null;
 
     public Movie(JSONObject json) throws JSONException {
         this.name = json.getString("title");
@@ -35,6 +30,7 @@ public class Movie implements Parcelable {
         this.voteAverage = json.getDouble("vote_average");
         this.imageUrl = String.format("https://image.tmdb.org/t/p/w342/%s", json.getString("poster_path"));
         this.backdropUrl = String.format("https://image.tmdb.org/t/p/w342/%s", json.getString("backdrop_path"));
+        this.id = json.getInt("id");
     }
 
     public static List<Movie> fromJsonArray(JSONArray array) throws JSONException {
@@ -53,13 +49,14 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
-        dest.writeString(this.description);
-        dest.writeString(this.imageUrl);
-        dest.writeString(this.backdropUrl);
-        dest.writeString(this.releaseDate);
-        dest.writeInt(this.voteCount);
-        dest.writeDouble(this.voteAverage);
+        dest.writeString(this.getName());
+        dest.writeString(this.getDescription());
+        dest.writeString(this.getImageUrl());
+        dest.writeString(this.getBackdropUrl());
+        dest.writeString(this.getReleaseDate());
+        dest.writeInt(this.getVoteCount());
+        dest.writeDouble(this.getVoteAverage());
+        dest.writeInt(this.getId());
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -82,5 +79,50 @@ public class Movie implements Parcelable {
         this.releaseDate = in.readString();
         this.voteCount = in.readInt();
         this.voteAverage = in.readDouble();
+        this.id = in.readInt();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public String getBackdropUrl() {
+        return backdropUrl;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public int getVoteCount() {
+        return voteCount;
+    }
+
+    public double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getYtVideoId() {
+        return ytVideoId;
+    }
+
+    public void setYtVideoId(String id) {
+        this.ytVideoId = id;
+    }
+
+    public boolean hasYtVideoId(){
+        return this.ytVideoId != null;
     }
 }

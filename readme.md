@@ -1,7 +1,7 @@
 Additional Features:
 
 Learned and used Constraint Layout instead of Relative/Linear for all layouts in the app
-UI:
+Stored api keys for Movies API and Youtube API in a secrets.xml file which is ignored by git using .gitignore
 
 Bonus Stories
 - Added rounded corners to images.

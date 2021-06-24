@@ -3,23 +3,35 @@ package com.example.flixster;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.RequestParams;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.databinding.ActivityDetailBinding;
 import com.example.flixster.model.Movie;
+import com.google.android.youtube.player.YouTubeIntents;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.Headers;
 
 public class DetailActivity extends AppCompatActivity {
 
     private ActivityDetailBinding binding;
     private Movie movie;
+    private String ytVideoId;
 
+    public static final String TAG = "DetailActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,24 +43,69 @@ public class DetailActivity extends AppCompatActivity {
         movie = getIntent().getParcelableExtra("movie");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(movie.name);
+        getSupportActionBar().setTitle(movie.getName());
         initViews();
+        fetchYtVideoId();
+    }
+
+
+    private void fetchYtVideoId(){
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        String key = movie.getId() + "*yt_video_id";
+        if (sharedPref.contains(key)){
+            ytVideoId = sharedPref.getString(key, null);
+            return;
+        }
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("api_key", getString(R.string.movie_db_key));
+        String url = "https://api.themoviedb.org/3/movie/" + movie.getId() + "/videos";
+        client.get(url, params, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Headers headers, JSON json) {
+                        JSONObject object = json.jsonObject;
+                        try {
+                            ytVideoId = object.getJSONArray("results").getJSONObject(0).getString("key");
+                            Log.i(TAG, "Successfully fetched movie video data");
+                            sharedPref.edit().putString(key, ytVideoId).apply();
+                        } catch (JSONException e){
+                            Log.e(TAG, "JSON exception when parsing movie video data", e);
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Headers headers, String errorResponse, Throwable t) {
+                        Log.w(TAG, errorResponse);
+                    }
+                }
+        );
+
     }
 
     private void initViews(){
         Glide.with(this)
-                .load(movie.backdropUrl)
+                .load(movie.getBackdropUrl())
                 .placeholder(R.drawable.flicks_movie_placeholder)
                 .error(R.drawable.flicks_movie_placeholder)
                 .into(binding.detailMovieImage);
 
-        binding.detailMovieTitle.setText(movie.name);
-        binding.detailMovieOverview.setText(movie.description);
+        binding.detailMovieTitle.setText(movie.getName());
+        binding.detailMovieOverview.setText(movie.getDescription());
 
-        binding.detailsRatingText.setText(movie.voteAverage + " (" + movie.voteCount + " votes)");
-        binding.detailMovieRatingbar.setRating((float) movie.voteAverage / 2);
-        binding.detailReleaseDateText.setText(movie.releaseDate);
+        binding.detailsRatingText.setText(movie.getVoteAverage() + " (" + movie.getVoteCount() + " votes)");
+        binding.detailMovieRatingbar.setRating((float) movie.getVoteAverage() / 2);
+        binding.detailReleaseDateText.setText(movie.getReleaseDate());
 
+        binding.detailMovieImage.setOnClickListener(v -> {
+            if (ytVideoId == null){
+                Toast.makeText(this, "There was an error. Please try again", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            startActivity(YouTubeIntents.createPlayVideoIntent(this, ytVideoId));
+        });
     }
 
     @Override

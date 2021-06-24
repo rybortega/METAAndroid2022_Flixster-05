@@ -16,11 +16,27 @@
         app:cardCornerRadius="8dp"
         app:cardElevation="10dp">
 
-        <ImageView
-            android:id="@+id/detail_movie_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/avatars" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/detail_movie_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:srcCompat="@tools:sample/avatars"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_play_circle_filled_24"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
+
 
     </androidx.cardview.widget.CardView>
 

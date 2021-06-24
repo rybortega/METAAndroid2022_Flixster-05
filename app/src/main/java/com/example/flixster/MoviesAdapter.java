@@ -5,11 +5,8 @@ import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -62,14 +59,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         }
 
         public void bind(Movie movie) {
-            binding.movieTitle.setText(movie.name);
-            binding.movieText.setText(movie.description);
+            binding.movieTitle.setText(movie.getName());
+            binding.movieText.setText(movie.getDescription());
 
             String imageUrl;
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-                imageUrl = movie.backdropUrl;
+                imageUrl = movie.getBackdropUrl();
             } else {
-                imageUrl = movie.imageUrl;
+                imageUrl = movie.getImageUrl();
             }
 
             Glide.with(context)

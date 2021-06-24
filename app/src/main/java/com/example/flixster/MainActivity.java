@@ -15,6 +15,8 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.codepath.asynchttpclient.callback.TextHttpResponseHandler;
 import com.example.flixster.databinding.ActivityMainBinding;
 import com.example.flixster.model.Movie;
+import com.google.android.youtube.player.YouTubeIntents;
+import com.google.android.youtube.player.YouTubeStandalonePlayer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private MoviesAdapter adapter;
     private List<Movie> movies;
 
-    public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=a9e7a1d1bbdb2899ade1a8438fada07b";
+    public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing";
     public static final String TAG = "MainActivity.java";
 
     @Override
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private void fetchMovies(){
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
+        params.put("api_key", getString(R.string.movie_db_key));
         params.put("page", 1);
         client.get(NOW_PLAYING_URL, params, new JsonHttpResponseHandler() {
                     @Override
