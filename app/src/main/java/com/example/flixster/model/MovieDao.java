@@ -18,4 +18,7 @@ public interface MovieDao {
 
     @Delete
     void delete(Movie movie);
+
+    @Query("SELECT EXISTS (SELECT 1 FROM favorites WHERE id = :id)")
+    boolean exists(int id);
 }

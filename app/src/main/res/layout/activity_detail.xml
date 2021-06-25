@@ -81,11 +81,12 @@
                     android:textColor="@color/black"
                     android:textSize="30sp"
                     android:textStyle="bold"
+                    android:transitionName="detail"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Movie title"
-                    android:transitionName="detail"/>
+                    tools:text="Movie title" />
+
 
                 <RatingBar
                     android:id="@+id/detail_movie_ratingbar"

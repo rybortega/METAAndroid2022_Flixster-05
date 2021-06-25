@@ -16,9 +16,7 @@ import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.databinding.ActivityMainBinding;
-import com.example.flixster.model.AppDatabaseProvider;
 import com.example.flixster.model.Movie;
-import com.example.flixster.model.MovieDao;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_activity, menu);
+        inflater.inflate(R.menu.main_activity_menu, menu);
         return true;
     }
 }

@@ -2,12 +2,16 @@ package com.example.flixster;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -17,10 +21,12 @@ import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.databinding.ActivityDetailBinding;
+import com.example.flixster.model.AppDatabase;
+import com.example.flixster.model.AppDatabaseProvider;
 import com.example.flixster.model.Movie;
+import com.example.flixster.model.MovieDao;
 import com.google.android.youtube.player.YouTubeIntents;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,6 +37,8 @@ public class DetailActivity extends AppCompatActivity {
     private ActivityDetailBinding binding;
     private Movie movie;
     private String ytVideoId;
+    private boolean movieIsFavorite = false;
+    private MovieDao movieDao;
 
     public static final String TAG = "DetailActivity";
 
@@ -43,6 +51,8 @@ public class DetailActivity extends AppCompatActivity {
         setSupportActionBar(binding.mainActivityToolbar);
 
         movie = getIntent().getParcelableExtra("movie");
+        movieDao = AppDatabaseProvider.getInstance(this).movieDao();
+        movieIsFavorite = movieDao.exists(movie.getId());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(movie.getName());
@@ -116,12 +126,37 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    private void onFavoriteClicked(MenuItem item){
+        if (movieIsFavorite){
+            movieIsFavorite = false;
+            item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_border_24));
+            movieDao.delete(movie);
+        } else {
+            movieIsFavorite = true;
+            item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_24));
+            movieDao.insert(movie);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.detail_activity_menu, menu);
+        int favoriteDrawableId = movieIsFavorite ? R.drawable.ic_baseline_favorite_24 : R.drawable.ic_baseline_favorite_border_24;
+        menu.findItem(R.id.action_make_favorite).setIcon(favoriteDrawableId);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                supportFinishAfterTransition();
+                this.finish();
                 return true;
+            case R.id.action_make_favorite:
+                onFavoriteClicked(item);
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
