@@ -1,22 +1,24 @@
 package com.example.flixster;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.codepath.asynchttpclient.callback.TextHttpResponseHandler;
 import com.example.flixster.databinding.ActivityMainBinding;
+import com.example.flixster.model.AppDatabaseProvider;
 import com.example.flixster.model.Movie;
-import com.google.android.youtube.player.YouTubeIntents;
-import com.google.android.youtube.player.YouTubeStandalonePlayer;
+import com.example.flixster.model.MovieDao;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
 
-//    private RecyclerView recyclerView;
     private MoviesAdapter adapter;
     private List<Movie> movies;
 
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View rootView = binding.getRoot();
         setContentView(rootView);
+        setSupportActionBar(binding.mainActivityToolbar);
 
         movies = new ArrayList<>();
 
@@ -65,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.i(TAG, "Successfully fetched movie data");
                             movies.addAll(Movie.fromJsonArray(results));
                             adapter.notifyDataSetChanged();
-
                         } catch (JSONException e){
                             Log.e(TAG, "JSON exception when parsing movie results", e);
                             e.printStackTrace();
@@ -81,13 +82,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView(){
-        adapter = new MoviesAdapter(movies, position -> {
+        adapter = new MoviesAdapter(movies, (position, transitionView) -> {
             Intent intent = new Intent(MainActivity.this, DetailActivity.class);
             intent.putExtra("movie", movies.get(position));
+
             startActivity(intent);
         }, this);
 
         binding.movieRecyclerview.setAdapter(adapter);
         binding.movieRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_favorites:
+                showFavorites();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void showFavorites(){
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity, menu);
+        return true;
     }
 }

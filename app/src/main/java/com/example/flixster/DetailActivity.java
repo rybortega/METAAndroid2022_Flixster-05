@@ -3,6 +3,7 @@ package com.example.flixster;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class DetailActivity extends AppCompatActivity {
         binding = ActivityDetailBinding.inflate(getLayoutInflater());
         View rootView = binding.getRoot();
         setContentView(rootView);
+        setSupportActionBar(binding.mainActivityToolbar);
 
         movie = getIntent().getParcelableExtra("movie");
 
@@ -85,6 +87,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void initViews(){
+
         Glide.with(this)
                 .load(movie.getBackdropUrl())
                 .placeholder(R.drawable.flicks_movie_placeholder)
@@ -95,7 +98,12 @@ public class DetailActivity extends AppCompatActivity {
         binding.detailMovieOverview.setText(movie.getDescription());
 
         binding.detailsRatingText.setText(movie.getVoteAverage() + " (" + movie.getVoteCount() + " votes)");
-        binding.detailMovieRatingbar.setRating((float) movie.getVoteAverage() / 2);
+
+        float ratingBarValue = (float) movie.getVoteAverage() / 2;
+        ObjectAnimator anim = ObjectAnimator.ofFloat(binding.detailMovieRatingbar, "rating", 0, ratingBarValue);
+        anim.setDuration(500);
+        anim.start();
+
         binding.detailReleaseDateText.setText(movie.getReleaseDate());
 
         binding.detailMovieImage.setOnClickListener(v -> {
@@ -112,7 +120,7 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                supportFinishAfterTransition();
                 return true;
         }
         return super.onOptionsItemSelected(item);

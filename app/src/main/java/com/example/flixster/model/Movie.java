@@ -3,6 +3,9 @@ package com.example.flixster.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +13,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity(tableName = "favorites")
 public class Movie implements Parcelable {
 
     private final String name;
@@ -19,8 +23,21 @@ public class Movie implements Parcelable {
     private final String releaseDate;
     private final int voteCount;
     private final double voteAverage;
+    @PrimaryKey
     private final int id;
     private String ytVideoId = null;
+
+    public Movie(String name, String description, String imageUrl, String backdropUrl, String releaseDate, int voteCount, double voteAverage, int id, String ytVideoId) {
+        this.name = name;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.backdropUrl = backdropUrl;
+        this.releaseDate = releaseDate;
+        this.voteCount = voteCount;
+        this.voteAverage = voteAverage;
+        this.id = id;
+        this.ytVideoId = ytVideoId;
+    }
 
     public Movie(JSONObject json) throws JSONException {
         this.name = json.getString("title");

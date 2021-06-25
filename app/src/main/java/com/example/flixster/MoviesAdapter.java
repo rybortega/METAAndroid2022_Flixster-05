@@ -18,7 +18,7 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
 
     public interface onItemClick {
-        void onItemClicked(int position);
+        void onItemClicked(int position, View transitionView);
     }
 
     private List<Movie> movies;
@@ -75,7 +75,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
                     .error(R.drawable.flicks_movie_placeholder)
                     .into(binding.movieImageview);
 
-            binding.movieCard.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
+            binding.movieCard.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition(), binding.movieTitle));
         }
     }
 }
