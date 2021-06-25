@@ -43,7 +43,8 @@
         app:layout_constraintVertical_bias="0.40"
         tools:visibility="visible"
         android:alpha="0"
-        tools:alpha="1"/>
+        tools:alpha="1"
+        android:contentDescription="@string/empty_image"/>
 
     <TextView
         android:id="@+id/favorite_empty_text"
@@ -55,7 +56,7 @@
         tools:visibility="visible"
         android:alpha="0"
         tools:alpha="1"
-        android:text="Add some favorites!"
+        android:text="@string/add_some_favorites"
         android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold"

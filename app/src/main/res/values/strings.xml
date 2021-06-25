@@ -3,4 +3,11 @@
     <string name="app_name">Flixster</string>
     <string name="image_content_description">Movie Image</string>
     <string name="movie_image_content_description">Movie Image</string>
-</resources>
+    <string name="detail_movie_image_content_desc">Detail Movie Image</string>
+    <string name="play_circle_filled">Play Circle Filled</string>
+    <string name="empty_image">Empty Image</string>
+    <string name="overview">Overview</string>
+    <string name="release_date">Release Date</string>
+    <string name="add_some_favorites">Add some favorites!</string>
+    <string name="open_favorites">Open Favorites</string>
+=</resources>

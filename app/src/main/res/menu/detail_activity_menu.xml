@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_make_favorite"
         android:icon="@drawable/ic_baseline_favorite_border_24"
-        android:title="Open Favorites"
+        android:title="@string/open_favorites"
         app:showAsAction="ifRoom"/>
 
 
