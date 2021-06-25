@@ -53,26 +53,15 @@
             android:id="@+id/movie_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="8dp"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/movie_imageview"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Movie Title" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/movie_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/movie_title"
-            app:srcCompat="@drawable/ic_baseline_favorite_24_red" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

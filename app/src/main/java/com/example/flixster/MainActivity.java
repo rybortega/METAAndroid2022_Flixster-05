@@ -103,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showFavorites(){
-
+        Intent intent = new Intent(MainActivity.this, FavoritesActivity.class);
+        startActivity(intent);
     }
 
     @Override
