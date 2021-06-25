@@ -31,4 +31,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/favorites_activity_toolbar" />
 
+    <ImageView
+        android:id="@+id/favorite_empty_image"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:src="@drawable/search"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/favorites_activity_toolbar"
+        app:layout_constraintVertical_bias="0.40"
+        tools:visibility="visible"
+        android:alpha="0"
+        tools:alpha="1"/>
+
+    <TextView
+        android:id="@+id/favorite_empty_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:alpha="0"
+        tools:alpha="1"
+        android:text="Add some favorites!"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/favorite_empty_image" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -42,6 +42,7 @@ public class FavoritesActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         fetchMovies();
+        updateEmptyDatasetView();
         super.onStart();
     }
 
@@ -49,6 +50,11 @@ public class FavoritesActivity extends AppCompatActivity {
         movies.clear();
         movies.addAll(movieDao.getAllFavorites());
         adapter.notifyDataSetChanged();
+    }
+
+    private void updateEmptyDatasetView() {
+        boolean showEmptyView = movies.isEmpty();
+        animateViews(showEmptyView, binding.favoriteEmptyImage, binding.favoriteEmptyText);
     }
 
     private void initRecyclerView(){
@@ -63,6 +69,21 @@ public class FavoritesActivity extends AppCompatActivity {
         }, this);
         binding.favoritesRecyclerview.setAdapter(adapter);
         binding.favoritesRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void animateViews(boolean shouldShow, View... views){
+        if (shouldShow){
+            for (View view: views){
+                view.setVisibility(View.VISIBLE);
+                view.animate().setDuration(800).setStartDelay(200).alpha(1.0f);
+            }
+        } else {
+            for (View view: views){
+                view.setVisibility(View.GONE);
+                view.animate().setDuration(600).alpha(0.0f);
+            }
+        }
+
     }
 
     @Override
